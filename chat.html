@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <!-- Include Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen">
+    <div id="app" class="flex flex-col h-screen">
+        <h1 class="text-2xl font-bold mb-4">Mental Health Chat Bot</h1>
+        <div id="chat-container" class="border border-gray-300 p-4 flex-grow overflow-y-auto"></div>
+        <div id="typing-indicator" class="mt-4 hidden">
+            <span class="mr-1">Typing</span>
+            <span class="animate-bounce mr-1">.</span>
+            <span class="animate-bounce mr-1">.</span>
+            <span class="animate-bounce">.</span>
+        </div>
+        <div id="chat-input" class="flex items-center bg-white px-4 py-2 border-t border-gray-300">
+            <input type="text" id="message-input" class="flex-grow rounded-l-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring focus:border-blue-500" placeholder="Type your message...">
+            <button id="send-button" type="submit" class="rounded-r-lg bg-blue-500 text-white px-4 py-2 hover:bg-blue-600">Send</button>
+        </div>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const chatMessages = document.createElement('div');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        chatMessages.id = 'chat-messages';
+        chatContainer.appendChild(chatMessages);
+
+        // Send message on button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Send message on Enter key press
+        messageInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+
+        function getCookieValue(name) {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return cookie.substring(name.length + 1);
+                }
+            }
+            return null;
+        }
+
+        // Get the API bearer token from the cookie
+        const accessToken = getCookieValue('access_token');
+        // Function to send message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+
+            // Clear input field
+            messageInput.value = '';
+
+            // Display user message in chat
+            displayMessage('user', message);
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate delay for typing indicator
+            setTimeout(() => {
+                // Send message to API
+                fetch('http://127.0.0.1:8000/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accessToken // Replace with your actual authentication token
+                    },
+                    body: JSON.stringify({ message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const response = data.response;
+                    // Hide typing indicator
+                    hideTypingIndicator();
+                    // Display assistant's reply in chat
+                    displayMessage('assistant', response);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Hide typing indicator
+                    hideTypingIndicator();
+                    // Display error message in chat
+                    displayMessage('error', 'An error occurred while processing your request.');
+                });
+            }, 1000); // Adjust the delay as needed
+        }
+
+        // Function to show the typing indicator
+        function showTypingIndicator() {
+            typingIndicator.classList.remove('hidden');
+        }
+
+        // Function to hide the typing indicator
+        function hideTypingIndicator() {
+            typingIndicator.classList.add('hidden');
+        }
+
+        // Function to display messages in the chat interface
+        function displayMessage(role, content) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('mb-2');
+
+            if (role === 'user') {
+                messageElement.innerHTML = `<span class="font-bold">You:</span> ${content}`;
+            } else if (role === 'assistant') {
+                messageElement.innerHTML = `<span class="font-bold">Assistant:</span> ${content}`;
+            } else if (role === 'error') {
+                messageElement.classList.add('text-red-500');
+                messageElement.textContent = content;
+            }
+
+            chatMessages.appendChild(messageElement);
+
+            // Scroll to bottom of chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
