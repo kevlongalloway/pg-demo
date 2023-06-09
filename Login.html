@@ -58,7 +58,7 @@
                 console.log(data.access_token);
 
                 // Save the access token to a cookie
-                document.cookie = `access_token=${access_token}`;
+                localStorage.setItem('access_token', access_token);
 
                 // Redirect to chat.html
                 //window.location.href = './home.html';
