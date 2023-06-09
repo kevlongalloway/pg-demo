@@ -55,11 +55,14 @@
                 console.log(data);
                 const { access_token } = data.access_token;
 
+                console.log(data);
+                console.log(data.token);
+
                 // Save the access token to a cookie
                 document.cookie = `access_token=${access_token}`;
 
                 // Redirect to chat.html
-                window.location.href = './home.html';
+                //window.location.href = './home.html';
             } else {
                 alert('Login failed. Please check your credentials and try again.');
             }
