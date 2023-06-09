@@ -62,7 +62,7 @@
                 // Handle the response data
                 if (response.ok) {
                     const { access_token } = data.access_token;
-                    localStorage.setItem('access_token', access_token);
+                    document.cookie = `access_token=${access_token}`;
                     console.log(data);
                     console.log(data.access_token);
                     //window.location.href = './home.html';

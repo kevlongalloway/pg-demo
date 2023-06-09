@@ -32,7 +32,7 @@
         }
 
         // Get the API bearer token from the cookie
-        const access_token = localStorage.getItem('access_token', access_token);
+        const accessToken = getCookieValue('access_token');
 
         // Function to request a guided meditation session
         async function requestMeditation() {

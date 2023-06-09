@@ -56,7 +56,7 @@
         }
 
         // Get the API bearer token from the cookie
-        const accessToken = localStorage.getItem('access_token');
+        const accessToken = getCookieValue('access_token');
         // Function to send message
         function sendMessage() {
             const message = messageInput.value.trim();
