@@ -60,7 +60,9 @@
             })
             .then(function(data) {
                 // Handle the response data
-                window.location.href = './home.html';
+                if (response.ok) {
+                    window.location.href = './home.html';
+                }
                 console.log(data); // You can customize this part to redirect or display a success message
             })
             .catch(function(error) {
