@@ -44,7 +44,7 @@
             var password = document.getElementById('password').value;
 
             // Send register request to the server
-            fetch('http://142.93.245.194/api//register', {
+            fetch('https://kevlongalloway.shop/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,9 +60,11 @@
             })
             .then(function(data) {
                 // Handle the response data
+                window.location.href = './home.html';
                 console.log(data); // You can customize this part to redirect or display a success message
             })
             .catch(function(error) {
+                alert('Login failed. Please check your credentials and try again.');
                 console.error(error);
             });
         });
