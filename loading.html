@@ -20,10 +20,11 @@
         fetch('https://kevlongalloway.shop/api/questionaire-completed')
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 if (data.completed == 0) {
-                    window.location.href = './questionaire.html';
+                    //window.location.href = './questionaire.html';
                 }else {
-                    window.location.href = './home.html';
+                    //window.location.href = './home.html';
                 }
             })
             .catch(error => {
