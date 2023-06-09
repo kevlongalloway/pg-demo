@@ -52,7 +52,7 @@
 
             if (response.ok) {
                 const data = await response.json();
-                const { access_token } = data.access_token;
+                const { access_token } = JSON.stringify(data.access_token);
 
                 console.log(data);
                 console.log(data.access_token);
