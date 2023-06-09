@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Questionnaire</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-2xl text-center">Questionnaire</h1>
+    <p class="text-gray-700 p-4 mb-4 text-center">Please take a moment to answer a few questions in order for us to provide you with the best possible experience.</p>
+    <form id="questionnaire-form" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+      <div class="mb-4">
+        <label for="question1" class="font-bold mb-2">Question 1:</label>
+        <select id="question1" name="question1" class="block w-full p-2 border border-gray-300 rounded-md">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="question2" class="font-bold mb-2">Question 2:</label>
+        <select id="question2" name="question2" class="block w-full p-2 border border-gray-300 rounded-md">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="question3" class="font-bold mb-2">Question 3:</label>
+        <select id="question3" name="question3" class="block w-full p-2 border border-gray-300 rounded-md">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="question4" class="font-bold mb-2">Question 4:</label>
+        <select id="question4" name="question4" class="block w-full p-2 border border-gray-300 rounded-md">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="question5" class="font-bold mb-2">Question 5:</label>
+        <input type="text" id="question5" name="question5" class="block w-full p-2 border border-gray-300 rounded-md" required>
+      </div>
+
+      <button type="button" id="submit-btn" class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      var form = document.getElementById('questionnaire-form');
+      var formData = new FormData(form);
+
+      fetch('process_answers.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(response) {
+        if (response.ok) {
+          alert('Answers submitted successfully!');
+          form.reset();
+        } else {
+          alert('Error submitting answers. Please try again.');
+        }
+      })
+      .catch(function(error) {
+        console.log('Error:', error);
+        alert('An error occurred while submitting answers.');
+      });
+    });
+  </script>
+</body>
+</html>
