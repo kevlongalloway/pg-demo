@@ -140,7 +140,7 @@
     function populateQuestions(questions) {
       const form = document.getElementById('questionnaire-form');
 
-      response.forEach((question, index) => {
+      questions.forEach((question, index) => {
         const questionNumber = index + 1;
         const questionId = `question${questionNumber}`;
         const answerId = `answer${questionNumber}`;
