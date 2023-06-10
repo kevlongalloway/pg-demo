@@ -27,13 +27,15 @@
           }
           return null;
       }
+
+    
     // Event listener for form submission
     document.getElementById('submit').addEventListener('click', (event) => {
       console.log(event);
       event.preventDefault(); // Prevent the form from submitting normally
-
+      var form = document.getElementById('questionnaire-form');
       // Get the form data
-      const formData = new FormData(event.target);
+      const formData = new FormData(form);
 
       // Convert form data to JSON object
       const answers = Array.from(formData.entries()).reduce((acc, [key, value]) => {
