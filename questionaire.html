@@ -138,29 +138,44 @@
 
     // Populate the questions and options into the HTML form
     function populateQuestions(questions) {
-      questions.forEach((question, index) => {
-        const questionNumber = index + 1;
-        const questionElement = document.getElementById(`question${questionNumber}`);
-        const questionType = question.question_type;
-        
-        // Populate question and question type
-        const labelElement = document.querySelector(`label[for="question${questionNumber}"]`);
-        labelElement.textContent = `Question ${questionNumber}: ${question.question}`;
-        questionElement.setAttribute('data-question-type', questionType);
-        
-        // Clear previous options (if any)
-        questionElement.innerHTML = '';
+      const form = document.getElementById('questionnaire-form');
 
-        // Populate options if question type is multiple choice
-        if (questionType === 1) {
-          question.options.forEach(option => {
+      response.forEach((question, index) => {
+        const questionNumber = index + 1;
+        const questionId = `question${questionNumber}`;
+        const answerId = `answer${questionNumber}`;
+
+        const label = document.createElement('label');
+        label.setAttribute('for', answerId);
+        label.setAttribute('class', 'font-bold mb-2');
+        label.textContent = `Question ${questionNumber}: ${question.question}`;
+
+        let answerElement;
+        if (question.question_type === '1') {
+          answerElement = document.createElement('select');
+          answerElement.setAttribute('name', answerId);
+          answerElement.setAttribute('id', answerId);
+          answerElement.setAttribute('class', 'block w-full p-2 border border-gray-300 rounded-md');
+
+          question.options.forEach((option) => {
             const optionElement = document.createElement('option');
-            optionElement.value = option.id;
+            optionElement.setAttribute('value', option.option);
             optionElement.textContent = option.option;
-            questionElement.appendChild(optionElement);
+            answerElement.appendChild(optionElement);
           });
+        } else if (question.question_type === '2') {
+          answerElement = document.createElement('input');
+          answerElement.setAttribute('type', 'text');
+          answerElement.setAttribute('name', answerId);
+          answerElement.setAttribute('id', answerId);
+          answerElement.setAttribute('class', 'block w-full p-2 border border-gray-300 rounded-md');
+          answerElement.setAttribute('required', true);
         }
+
+        form.appendChild(label);
+        form.appendChild(answerElement);
       });
+
     }
 
     // Event listener for submit button
